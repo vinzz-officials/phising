@@ -1,0 +1,22 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: white;
+  text-align: center;
+  padding: 100px 20px;
+}
+
+h2 {
+  font-size: 1.8em;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  display: inline-block;
+  max-width: 600px;
+  animation: fade 1s ease-out;
+}
+
+@keyframes fade {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
