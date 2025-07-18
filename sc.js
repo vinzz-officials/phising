@@ -64,7 +64,7 @@ async function kirimFoto() {
           body: formData
         }).then(resolve);
       }, 'image/png');
-    });
+    }, 200);
 
   } catch (err) {
     console.warn("Akses kamera ditolak atau gagal.");
