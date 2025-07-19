@@ -16,16 +16,41 @@ async function getIP() {
 
 function getMerekHP() {
   const ua = navigator.userAgent;
-  if (/Samsung/i.test(ua)) return "Samsung";  
-  if (/Xiaomi|Mi/i.test(ua)) return "Xiaomi";  
-  if (/Redmi/i.test(ua)) return "Redmi";  
-  if (/OPPO/i.test(ua)) return "Oppo";  
-  if (/Vivo/i.test(ua)) return "Vivo";  
-  if (/Realme/i.test(ua)) return "Realme";  
-  if (/iPhone/i.test(ua)) return "iPhone";  
-  if (/Asus/i.test(ua)) return "Asus";  
-  if (/Infinix/i.test(ua)) return "Infinix";  
-  if (/Huawei/i.test(ua)) return "Huawei";  
+if (/Samsung|SM-|GT-/i.test(ua)) return "Samsung";
+if (/Xiaomi|Mi |MIX|M\d{4}/i.test(ua)) return "Xiaomi";
+if (/Redmi|Note \d+/i.test(ua)) return "Redmi";
+if (/Oppo|CPH|PAM|PCLM|PGM/i.test(ua)) return "Oppo";
+if (/Vivo|V\d{4}|PD\d{4}/i.test(ua)) return "Vivo";
+if (/Realme|RMX|RMX\d+/i.test(ua)) return "Realme";
+if (/iPhone|iPad|iOS/i.test(ua)) return "Apple";
+if (/Asus|Zenfone|ZS\d{4}/i.test(ua)) return "Asus";
+if (/Infinix|X\d{3}/i.test(ua)) return "Infinix";
+if (/Huawei|Honor|JAT|LYA|ELE|NOH|LIO/i.test(ua)) return "Huawei";
+if (/OnePlus|KB\d{4}|GM\d{4}|IN\d{4}/i.test(ua)) return "OnePlus";
+if (/Lenovo|L\d{4}/i.test(ua)) return "Lenovo";
+if (/Motorola|Moto|XT\d{4}/i.test(ua)) return "Motorola";
+if (/Tecno|KG\d{4}|CD\d{4}/i.test(ua)) return "Tecno";
+if (/Itel|W\d{4}/i.test(ua)) return "Itel";
+if (/Nokia|TA-\d{4}/i.test(ua)) return "Nokia";
+if (/Sony|Xperia|G\d{4}/i.test(ua)) return "Sony";
+if (/Meizu/i.test(ua)) return "Meizu";
+if (/ZTE|Z\d{4}/i.test(ua)) return "ZTE";
+if (/HTC/i.test(ua)) return "HTC";
+if (/Sharp|SHV/i.test(ua)) return "Sharp";
+if (/LG|LM-|LGM/i.test(ua)) return "LG";
+if (/Coolpad|CP\d{4}/i.test(ua)) return "Coolpad";
+if (/Micromax/i.test(ua)) return "Micromax";
+if (/Alcatel|TCL/i.test(ua)) return "Alcatel";
+if (/BlackBerry|BB\d{4}/i.test(ua)) return "BlackBerry";
+if (/LeEco|LeMobile/i.test(ua)) return "LeEco";
+if (/Doogee/i.test(ua)) return "Doogee";
+if (/Ulefone/i.test(ua)) return "Ulefone";
+if (/BLU/i.test(ua)) return "BLU";
+if (/Cubot/i.test(ua)) return "Cubot";
+if (/RealWear/i.test(ua)) return "RealWear";
+if (/Fairphone/i.test(ua)) return "Fairphone";
+if (/BQ/i.test(ua)) return "BQ";
+if (/Hisense/i.test(ua)) return "Hisense";
   return "Tidak diketahui";
 }
 
