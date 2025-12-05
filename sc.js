@@ -1,4 +1,4 @@
-const token = '7876416430:AAGfJpQqoNvDSbx4tpuJQPdy5k8vx7Uhndw';
+const token = process.env.bot;
 const chat_id = '7777604508';
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
